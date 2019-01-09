@@ -1,0 +1,52 @@
+plugins {
+    id "org.springframework.boot" version "${springBootVersion}"
+    id "io.spring.dependency-management" version "${dependencyManagementVersion}"
+    id "java"
+    id "com.adarshr.test-logger" version "${testLoggerVersion}"
+    id 'jacoco'
+}
+
+group = "net.aspanc.bootcamp"
+version = "2.0.0"
+sourceCompatibility = "11"
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation "org.springframework.boot:spring-boot-starter-web"
+    implementation "org.springframework.session:spring-session-core"
+    implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
+    implementation "javax.servlet:jstl"
+    developmentOnly "org.springframework.boot:spring-boot-devtools"
+    runtimeOnly "mysql:mysql-connector-java"
+    runtimeOnly "org.hsqldb:hsqldb"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+}
+
+test {
+    useJUnitPlatform()
+    useJUnit {
+        if (project.hasProperty('excludeE2Etests')) {
+            excludeCategories 'net.aspanc.bootcamp.springmvc.categories.End2EndTest'
+        }
+    }
+}
+
+tasks.test {
+    finalizedBy("jacocoTestReport")
+    doLast {
+        println("View code coverage at:")
+        println("file://$buildDir/reports/jacoco/test/html/index.html")
+    }
+}
