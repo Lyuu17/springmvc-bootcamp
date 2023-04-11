@@ -28,10 +28,15 @@ dependencies {
     implementation "org.springframework.session:spring-session-core"
     implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
     implementation "javax.servlet:jstl"
+    implementation 'org.projectlombok:lombok:1.18.26'
     developmentOnly "org.springframework.boot:spring-boot-devtools"
     runtimeOnly "mysql:mysql-connector-java"
     runtimeOnly "org.hsqldb:hsqldb"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+    compileOnly 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
+    testCompileOnly 'org.projectlombok:lombok:1.18.26'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.26'
 }
 
 test {
