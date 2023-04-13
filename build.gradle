@@ -4,6 +4,7 @@ plugins {
     id "java"
     id "com.adarshr.test-logger" version "${testLoggerVersion}"
     id 'jacoco'
+    id "io.freefair.lombok" version "5.3.3.3"
 }
 
 group = "net.aspanc.bootcamp"
@@ -28,7 +29,6 @@ dependencies {
     implementation "org.springframework.session:spring-session-core"
     implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
     implementation "javax.servlet:jstl"
-    implementation 'org.projectlombok:lombok:1.18.26'
     developmentOnly "org.springframework.boot:spring-boot-devtools"
     runtimeOnly "mysql:mysql-connector-java"
     runtimeOnly "org.hsqldb:hsqldb"
