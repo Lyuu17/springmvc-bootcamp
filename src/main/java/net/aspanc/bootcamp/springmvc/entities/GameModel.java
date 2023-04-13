@@ -22,5 +22,5 @@ public class GameModel {
     private String description;
 
     @Column(name = "steam_id")
-    private Integer steamId;
+    private int steamId;
 }
