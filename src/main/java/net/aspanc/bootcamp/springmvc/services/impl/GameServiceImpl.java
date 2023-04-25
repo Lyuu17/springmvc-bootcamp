@@ -21,7 +21,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Optional<GameModel> findById(long id) {
+    public Optional<GameModel> findById(Long id) {
         return gameDao.findById(id);
     }
 
@@ -31,12 +31,12 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(Long id) {
         gameDao.deleteById(id);
     }
 
     @Override
-    public void save(GameModel game) {
-        gameDao.save(game);
+    public GameModel save(GameModel game) {
+        return gameDao.save(game);
     }
 }

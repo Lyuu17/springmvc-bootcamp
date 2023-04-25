@@ -17,7 +17,7 @@ public class GameModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private long id;
+    private Long id;
 
     @Column(name = "title")
     @NotEmpty
@@ -27,5 +27,5 @@ public class GameModel {
     private String description;
 
     @Column(name = "steam_id")
-    private int steamId;
+    private Integer steamId;
 }

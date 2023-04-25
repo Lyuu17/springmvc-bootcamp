@@ -9,11 +9,11 @@ public interface GameService {
 
     List<GameModel> findAll();
 
-    Optional<GameModel> findById(long id);
+    Optional<GameModel> findById(Long id);
 
     List<GameModel> findByTitle(String title);
 
-    void deleteById(long id);
+    void deleteById(Long id);
 
-    void save(GameModel entity);
+    GameModel save(GameModel entity);
 }
