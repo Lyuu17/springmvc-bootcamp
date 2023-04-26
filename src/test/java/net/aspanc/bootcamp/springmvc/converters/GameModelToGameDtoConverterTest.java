@@ -5,6 +5,7 @@ import net.aspanc.bootcamp.springmvc.entities.GameModel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.convert.converter.Converter;
 
 public class GameModelToGameDtoConverterTest {
 
@@ -12,7 +13,7 @@ public class GameModelToGameDtoConverterTest {
     private final String TEST_GAME_DESCRIPTION = "Description Test";
     private final Integer TEST_GAME_STEAMID = 1337;
 
-    private final GameModelToGameDtoConverter gameModelToGameDtoConverter = new GameModelToGameDtoConverter();
+    private final Converter<GameModel, GameDto> converter = new GameModelToGameDtoConverter();
 
     private GameModel gameModel;
 
@@ -27,7 +28,7 @@ public class GameModelToGameDtoConverterTest {
 
     @Test
     public void conversionTest() {
-        GameDto gameDto = gameModelToGameDtoConverter.convert(gameModel);
+        GameDto gameDto = converter.convert(gameModel);
 
         Assert.assertEquals(gameModel.getId(), gameDto.getId());
         Assert.assertEquals(gameModel.getTitle(), gameDto.getTitle());
@@ -37,6 +38,6 @@ public class GameModelToGameDtoConverterTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void conversionTestNull() {
-        gameModelToGameDtoConverter.convert(null);
+        converter.convert(null);
     }
 }
