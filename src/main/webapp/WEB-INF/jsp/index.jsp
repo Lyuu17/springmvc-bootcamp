@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib tagdir="/WEB-INF/tags" prefix="tags" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <tags:bootstrap/>
 <html>
@@ -21,7 +21,7 @@
       <c:forEach items="${gameList}" var="game">
         <tr>
           <td>${game.id}</td>
-          <td>${game.title}</td>
+          <td><a href="/game/${game.id}">${game.title}</a></td>
         </tr>
       </c:forEach>
       </tbody>
