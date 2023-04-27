@@ -4,7 +4,8 @@
 <tags:bootstrap/>
 <html>
 <head>
-  <title>Title</title>
+  <title>Games</title>
+  <script type="text/javascript" src="/js/main.js"></script>
 </head>
 <body>
   <div class="m-4">
@@ -14,6 +15,7 @@
       <tr>
         <th>ID</th>
         <th>Title</th>
+        <th>Actions</th>
       </tr>
       </thead>
 
@@ -22,6 +24,9 @@
         <tr>
           <td>${game.id}</td>
           <td><a href="/game/${game.id}">${game.title}</a></td>
+          <td>
+            <button class="btn btn-danger delete-game-btn" data-id="${game.id}">Delete</button>
+          </td>
         </tr>
       </c:forEach>
       </tbody>

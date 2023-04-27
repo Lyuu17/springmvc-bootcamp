@@ -25,4 +25,10 @@ public class GameController {
         gameFacade.findById(id).ifPresent(gameFound -> model.addAttribute("game", gameFound));
         return "game";
     }
+
+    @RequestMapping("/game/delete/{id}")
+    private String deleteGame(@PathVariable("id") Long id, Model model) {
+        gameFacade.findById(id).ifPresent(gameDto -> gameFacade.deleteById(id));
+        return "redirect:/";
+    }
 }
