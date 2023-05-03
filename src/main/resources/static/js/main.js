@@ -6,4 +6,8 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  document.getElementById('add-game-btn').addEventListener('click', () => {
+    window.location.href = `/game/add`;
+  });
 });

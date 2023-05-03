@@ -9,6 +9,10 @@
 </head>
 <body>
   <div class="m-lg-5">
+    <div class="d-flex flex-row justify-content-center mb-2">
+      <button class="btn btn-primary" id="add-game-btn">Add a game</button>
+    </div>
+
     <form method="get" action="/game/search/">
       <div class="input-group mb-3">
         <input id="search-input" type="text" class="form-control" placeholder="Search a game..."
