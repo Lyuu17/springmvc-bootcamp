@@ -8,7 +8,17 @@
   <script type="text/javascript" src="/js/main.js"></script>
 </head>
 <body>
-  <div class="m-4">
+  <div class="m-lg-5">
+    <form method="get" action="/game/search/">
+      <div class="input-group mb-3">
+        <input id="search-input" type="text" class="form-control" placeholder="Search a game..."
+               aria-label="Search a game" name="title">
+        <div class="input-group-append">
+          <button class="btn btn-outline-primary">Search</button>
+        </div>
+      </div>
+    </form>
+
     <table class="table table-bordered">
 
       <thead>
