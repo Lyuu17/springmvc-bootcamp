@@ -7,6 +7,12 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  document.querySelectorAll('.edit-game-btn').forEach(elem => {
+    elem.addEventListener('click', () => {
+      window.location.href = `/game/edit/${elem.getAttribute('data-id')}`;
+    });
+  });
+
   document.getElementById('add-game-btn').addEventListener('click', () => {
     window.location.href = `/game/add`;
   });

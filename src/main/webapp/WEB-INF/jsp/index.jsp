@@ -27,19 +27,20 @@
 
       <thead>
       <tr>
-        <th>ID</th>
+        <th class="text-center">ID</th>
         <th>Title</th>
-        <th>Actions</th>
+        <th class="text-center">Actions</th>
       </tr>
       </thead>
 
       <tbody>
       <c:forEach items="${gameList}" var="game">
         <tr>
-          <td>${game.id}</td>
-          <td><a href="/game/${game.id}">${game.title}</a></td>
-          <td>
-            <button class="btn btn-danger delete-game-btn" data-id="${game.id}">Delete</button>
+          <td class="text-center align-middle">${game.id}</td>
+          <td class="col-10 align-middle"><a href="/game/${game.id}">${game.title}</a></td>
+          <td class="d-flex flex-row justify-content-center">
+            <button class="btn btn-primary edit-game-btn" data-id="${game.id}">Edit</button>
+            <button class="btn ms-sm-2 btn-danger delete-game-btn" data-id="${game.id}">Delete</button>
           </td>
         </tr>
       </c:forEach>

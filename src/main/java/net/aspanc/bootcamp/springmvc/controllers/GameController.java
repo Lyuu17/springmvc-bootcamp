@@ -48,4 +48,15 @@ public class GameController {
     private String addGame(Model model, @ModelAttribute("game") GameDto gameDto) {
         return "redirect:/game/" + gameFacade.save(gameDto).getId();
     }
+
+    @GetMapping("/game/edit/{id}")
+    private String editGameForm(Model model, @PathVariable("id") Long id) {
+        gameFacade.findById(id).ifPresent(gameFound -> model.addAttribute("game", gameFound));
+        return "editgame";
+    }
+
+    @PostMapping("/game/edit/{id}")
+    private String editGame(Model model, @ModelAttribute("game") GameDto gameDto) {
+        return "redirect:/game/" + gameFacade.save(gameDto).getId();
+    }
 }
