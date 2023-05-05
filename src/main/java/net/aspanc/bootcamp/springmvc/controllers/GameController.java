@@ -4,6 +4,8 @@ import net.aspanc.bootcamp.springmvc.dtos.GameDto;
 import net.aspanc.bootcamp.springmvc.facades.GameFacade;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -45,7 +47,11 @@ public class GameController {
     }
 
     @PostMapping("/game/add")
-    private String addGame(Model model, @ModelAttribute("game") GameDto gameDto) {
+    private String addGame(@Validated @ModelAttribute("game") GameDto gameDto, BindingResult result) {
+        if (result.hasErrors()) {
+            return "editgame";
+        }
+
         return "redirect:/game/" + gameFacade.save(gameDto).getId();
     }
 
@@ -56,7 +62,11 @@ public class GameController {
     }
 
     @PostMapping("/game/edit/{id}")
-    private String editGame(Model model, @ModelAttribute("game") GameDto gameDto) {
+    private String editGame(@Validated @ModelAttribute("game") GameDto gameDto, BindingResult result) {
+        if (result.hasErrors()) {
+            return "editgame";
+        }
+
         return "redirect:/game/" + gameFacade.save(gameDto).getId();
     }
 }

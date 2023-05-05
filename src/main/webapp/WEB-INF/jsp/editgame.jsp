@@ -24,16 +24,19 @@
               <div class="mb-3">
                 <wl:label path="title" cssClass="form-label">Game Title</wl:label>
                 <wl:input path="title" cssClass="form-control"/>
+                <wl:errors path="title" cssClass="text-danger"></wl:errors>
               </div>
 
               <div class="mb-3">
                 <wl:label path="description" cssClass="form-label">Game Description</wl:label>
                 <wl:input path="description" cssClass="form-control"/>
+                <wl:errors path="description" cssClass="text-danger"></wl:errors>
               </div>
 
               <div class="mb-3">
                 <wl:label path="steamId" cssClass="form-label">SteamID</wl:label>
                 <wl:input path="steamId" cssClass="form-control"/>
+                <wl:errors path="steamId" cssClass="text-danger"></wl:errors>
               </div>
 
               <div class="d-flex flex-row justify-content-center mb-2">
