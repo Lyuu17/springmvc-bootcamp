@@ -12,14 +12,14 @@ public class GameDto {
 
     private Long id;
 
-    @NotEmpty(message = "Title is required")
+    @NotEmpty
     private String title;
 
     @NotNull
     private String description;
 
-    @NotNull(message = "SteamId is required")
-    @PositiveOrZero(message = "SteamId must be positive")
+    @NotNull
+    @PositiveOrZero
     @Digits(integer = 9, fraction = 0)
     private Integer steamId;
 }

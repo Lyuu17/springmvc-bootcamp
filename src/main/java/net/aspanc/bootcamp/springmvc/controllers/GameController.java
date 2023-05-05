@@ -2,6 +2,8 @@ package net.aspanc.bootcamp.springmvc.controllers;
 
 import net.aspanc.bootcamp.springmvc.dtos.GameDto;
 import net.aspanc.bootcamp.springmvc.facades.GameFacade;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,9 @@ public class GameController {
     @Resource
     private GameFacade gameFacade;
 
+    @Resource
+    private MessageSource messageSource;
+
     @GetMapping("/")
     private String index(Model model) {
         model.addAttribute("gameList", gameFacade.findAll());
@@ -31,7 +36,7 @@ public class GameController {
 
     @GetMapping("/game/delete/{id}")
     private String deleteGame(@PathVariable("id") Long id, Model model, RedirectAttributes attr) {
-        attr.addFlashAttribute("alertMessageSuccess", "Game deleted successfully");
+        attr.addFlashAttribute("alertMessageSuccess", messageSource.getMessage("alert.game.deleted.success", null, LocaleContextHolder.getLocale()));
         gameFacade.findById(id).ifPresent(gameDto -> gameFacade.deleteById(id));
         return "redirect:/";
     }
@@ -54,7 +59,7 @@ public class GameController {
             return "editgame";
         }
 
-        attr.addFlashAttribute("alertMessageSuccess", "Game added successfully");
+        attr.addFlashAttribute("alertMessageSuccess", messageSource.getMessage("alert.game.added.success", null, LocaleContextHolder.getLocale()));
         return "redirect:/game/" + gameFacade.save(gameDto).getId();
     }
 
@@ -70,7 +75,7 @@ public class GameController {
             return "editgame";
         }
 
-        attr.addFlashAttribute("alertMessageSuccess", "Game updated successfully");
+        attr.addFlashAttribute("alertMessageSuccess", messageSource.getMessage("alert.game.updated.success", null, LocaleContextHolder.getLocale()));
         return "redirect:/game/" + gameFacade.save(gameDto).getId();
     }
 }

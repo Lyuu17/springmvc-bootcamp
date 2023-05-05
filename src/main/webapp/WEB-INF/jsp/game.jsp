@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <tags:bootstrap/>
 <html>
 <head>
@@ -10,7 +11,7 @@
 
   <c:choose>
     <c:when test="${empty game}">
-      <h1>Game not found</h1>
+      <h1><fmt:message key="label.game.notfound"/></h1>
     </c:when>
     <c:otherwise>
       <div class="m-4">
