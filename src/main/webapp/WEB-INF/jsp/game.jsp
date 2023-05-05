@@ -14,6 +14,8 @@
     </c:when>
     <c:otherwise>
       <div class="m-4">
+        <tags:alertSuccess/>
+
         <div class="border">
           <div class="bg-primary p-sm-2">
             <h2 class="text-white">${game.title}</h2>

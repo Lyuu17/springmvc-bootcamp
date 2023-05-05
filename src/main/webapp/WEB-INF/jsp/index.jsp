@@ -9,6 +9,8 @@
 </head>
 <body>
   <div class="m-lg-5">
+    <tags:alertSuccess/>
+
     <div class="d-flex flex-row justify-content-center mb-2">
       <button class="btn btn-primary" id="add-game-btn">Add a game</button>
     </div>

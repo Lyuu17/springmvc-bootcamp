@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
 
@@ -29,7 +30,8 @@ public class GameController {
     }
 
     @GetMapping("/game/delete/{id}")
-    private String deleteGame(@PathVariable("id") Long id, Model model) {
+    private String deleteGame(@PathVariable("id") Long id, Model model, RedirectAttributes attr) {
+        attr.addFlashAttribute("alertMessageSuccess", "Game deleted successfully");
         gameFacade.findById(id).ifPresent(gameDto -> gameFacade.deleteById(id));
         return "redirect:/";
     }
@@ -47,11 +49,12 @@ public class GameController {
     }
 
     @PostMapping("/game/add")
-    private String addGame(@Validated @ModelAttribute("game") GameDto gameDto, BindingResult result) {
+    private String addGame(@Validated @ModelAttribute("game") GameDto gameDto, BindingResult result, RedirectAttributes attr) {
         if (result.hasErrors()) {
             return "editgame";
         }
 
+        attr.addFlashAttribute("alertMessageSuccess", "Game added successfully");
         return "redirect:/game/" + gameFacade.save(gameDto).getId();
     }
 
@@ -62,11 +65,12 @@ public class GameController {
     }
 
     @PostMapping("/game/edit/{id}")
-    private String editGame(@Validated @ModelAttribute("game") GameDto gameDto, BindingResult result) {
+    private String editGame(@Validated @ModelAttribute("game") GameDto gameDto, BindingResult result, RedirectAttributes attr) {
         if (result.hasErrors()) {
             return "editgame";
         }
 
+        attr.addFlashAttribute("alertMessageSuccess", "Game updated successfully");
         return "redirect:/game/" + gameFacade.save(gameDto).getId();
     }
 }
