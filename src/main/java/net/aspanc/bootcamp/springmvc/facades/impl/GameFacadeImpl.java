@@ -1,9 +1,12 @@
 package net.aspanc.bootcamp.springmvc.facades.impl;
 
+import com.ibasco.agql.protocols.valve.steam.webapi.interfaces.SteamNews;
 import com.ibasco.agql.protocols.valve.steam.webapi.interfaces.SteamStorefront;
+import com.ibasco.agql.protocols.valve.steam.webapi.pojos.SteamNewsItem;
 import com.ibasco.agql.protocols.valve.steam.webapi.pojos.StoreAppDetails;
 import net.aspanc.bootcamp.springmvc.dtos.GameDto;
 import net.aspanc.bootcamp.springmvc.dtos.SteamGameDto;
+import net.aspanc.bootcamp.springmvc.dtos.SteamGameNewsDto;
 import net.aspanc.bootcamp.springmvc.entities.GameModel;
 import net.aspanc.bootcamp.springmvc.facades.GameFacade;
 import net.aspanc.bootcamp.springmvc.services.GameService;
@@ -31,7 +34,13 @@ public class GameFacadeImpl implements GameFacade {
     private SteamStorefront steamStorefront;
 
     @Resource
+    private SteamNews steamNews;
+
+    @Resource
     private Converter<StoreAppDetails, SteamGameDto> storeAppDetailsGameSteamDataDtoConverter;
+
+    @Resource
+    private Converter<SteamNewsItem, SteamGameNewsDto> steamNewsToGameSteamNewsDtoConverter;
 
     @Override
     public List<GameDto> findAll() {
@@ -65,6 +74,15 @@ public class GameFacadeImpl implements GameFacade {
         return gameModelToGameDtoConverter.convert(gameService.save(gameDtoToGameModelConverter.convert(game)));
     }
 
+    @Override
+    public List<SteamGameNewsDto> getGameNews(Integer steamId) {
+        return steamNews.getNewsForApp(steamId, 250, -1, 5, "").join()
+                .stream()
+                .map(steamNewsToGameSteamNewsDtoConverter::convert)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public SteamGameDto getGameDetails(Integer steamId) {
         return storeAppDetailsGameSteamDataDtoConverter.convert(steamStorefront.getAppDetails(steamId).join());
     }

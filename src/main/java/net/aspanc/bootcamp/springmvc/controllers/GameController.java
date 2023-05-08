@@ -2,6 +2,7 @@ package net.aspanc.bootcamp.springmvc.controllers;
 
 import net.aspanc.bootcamp.springmvc.dtos.GameDto;
 import net.aspanc.bootcamp.springmvc.dtos.SteamGameDto;
+import net.aspanc.bootcamp.springmvc.dtos.SteamGameNewsDto;
 import net.aspanc.bootcamp.springmvc.facades.GameFacade;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Controller
 public class GameController {
@@ -79,6 +81,12 @@ public class GameController {
 
         attr.addFlashAttribute("alertMessageSuccess", messageSource.getMessage("alert.game.updated.success", null, LocaleContextHolder.getLocale()));
         return "redirect:/game/" + gameFacade.save(gameDto).getId();
+    }
+
+    @GetMapping(value = "/game/steam/news/{steamId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    private List<SteamGameNewsDto> gameNews(@PathVariable("steamId") Integer steamId) {
+        return gameFacade.getGameNews(steamId);
     }
 
     @GetMapping(value = "/game/steam/details/{steamId}", produces = MediaType.APPLICATION_JSON_VALUE)

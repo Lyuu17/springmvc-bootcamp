@@ -8,4 +8,8 @@
     <bean id="steamStorefront" class="com.ibasco.agql.protocols.valve.steam.webapi.interfaces.SteamStorefront">
         <constructor-arg ref="steamWebApiClient"/>
     </bean>
+
+    <bean id="steamNews" class="com.ibasco.agql.protocols.valve.steam.webapi.interfaces.SteamNews">
+        <constructor-arg ref="steamWebApiClient"/>
+    </bean>
 </beans>
