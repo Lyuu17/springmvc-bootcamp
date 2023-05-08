@@ -1,6 +1,9 @@
 package net.aspanc.bootcamp.springmvc.facades.impl;
 
+import com.ibasco.agql.protocols.valve.steam.webapi.interfaces.SteamStorefront;
+import com.ibasco.agql.protocols.valve.steam.webapi.pojos.StoreAppDetails;
 import net.aspanc.bootcamp.springmvc.dtos.GameDto;
+import net.aspanc.bootcamp.springmvc.dtos.SteamGameDto;
 import net.aspanc.bootcamp.springmvc.entities.GameModel;
 import net.aspanc.bootcamp.springmvc.facades.GameFacade;
 import net.aspanc.bootcamp.springmvc.services.GameService;
@@ -23,6 +26,12 @@ public class GameFacadeImpl implements GameFacade {
 
     @Resource
     private Converter<GameModel, GameDto> gameModelToGameDtoConverter;
+
+    @Resource
+    private SteamStorefront steamStorefront;
+
+    @Resource
+    private Converter<StoreAppDetails, SteamGameDto> storeAppDetailsGameSteamDataDtoConverter;
 
     @Override
     public List<GameDto> findAll() {
@@ -54,5 +63,9 @@ public class GameFacadeImpl implements GameFacade {
     @Override
     public GameDto save(GameDto game) {
         return gameModelToGameDtoConverter.convert(gameService.save(gameDtoToGameModelConverter.convert(game)));
+    }
+
+    public SteamGameDto getGameDetails(Integer steamId) {
+        return storeAppDetailsGameSteamDataDtoConverter.convert(steamStorefront.getAppDetails(steamId).join());
     }
 }
