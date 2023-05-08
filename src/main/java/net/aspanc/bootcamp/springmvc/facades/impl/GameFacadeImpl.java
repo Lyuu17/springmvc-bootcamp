@@ -4,6 +4,7 @@ import com.ibasco.agql.protocols.valve.steam.webapi.interfaces.SteamNews;
 import com.ibasco.agql.protocols.valve.steam.webapi.interfaces.SteamStorefront;
 import com.ibasco.agql.protocols.valve.steam.webapi.pojos.SteamNewsItem;
 import com.ibasco.agql.protocols.valve.steam.webapi.pojos.StoreAppDetails;
+import net.aspanc.bootcamp.springmvc.configurations.SteamAPIProperties;
 import net.aspanc.bootcamp.springmvc.dtos.GameDto;
 import net.aspanc.bootcamp.springmvc.dtos.SteamGameDto;
 import net.aspanc.bootcamp.springmvc.dtos.SteamGameNewsDto;
@@ -42,6 +43,9 @@ public class GameFacadeImpl implements GameFacade {
     @Resource
     private Converter<SteamNewsItem, SteamGameNewsDto> steamNewsToGameSteamNewsDtoConverter;
 
+    @Resource
+    private SteamAPIProperties steamAPIProperties;
+
     @Override
     public List<GameDto> findAll() {
         return gameService.findAll()
@@ -76,7 +80,7 @@ public class GameFacadeImpl implements GameFacade {
 
     @Override
     public List<SteamGameNewsDto> getGameNews(Integer steamId) {
-        return steamNews.getNewsForApp(steamId, 250, -1, 5, "").join()
+        return steamNews.getNewsForApp(steamId, steamAPIProperties.getNewsMaxContentLength(), -1, steamAPIProperties.getNewsMaxItems(), "").join()
                 .stream()
                 .map(steamNewsToGameSteamNewsDtoConverter::convert)
                 .collect(Collectors.toList());
