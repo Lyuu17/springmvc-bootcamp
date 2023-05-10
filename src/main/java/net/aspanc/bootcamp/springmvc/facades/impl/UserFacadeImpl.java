@@ -47,6 +47,11 @@ public class UserFacadeImpl implements UserFacade {
     }
 
     @Override
+    public Optional<UserDto> findFirstByUsername(String username) {
+        return userService.findFirstByUsername(username).map(model -> userModelToUserDtoConverter.convert(model));
+    }
+
+    @Override
     public void deleteById(Long id) {
         userService.deleteById(id);
     }

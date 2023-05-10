@@ -13,6 +13,8 @@ public interface UserService {
 
     List<UserModel> findByUsername(String username);
 
+    Optional<UserModel> findFirstByUsername(String username);
+
     void deleteById(Long id);
 
     UserModel save(UserModel entity);

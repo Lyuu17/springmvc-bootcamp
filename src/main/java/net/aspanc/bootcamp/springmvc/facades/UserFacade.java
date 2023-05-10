@@ -13,6 +13,8 @@ public interface UserFacade {
 
     List<UserDto> findByUsername(String username);
 
+    Optional<UserDto> findFirstByUsername(String username);
+
     void deleteById(Long id);
 
     UserDto save(UserDto user);

@@ -31,6 +31,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<UserModel> findFirstByUsername(String username) {
+        return userDao.findFirstByUsername(username);
+    }
+
+    @Override
     public void deleteById(Long id) {
         userDao.deleteById(id);
     }
