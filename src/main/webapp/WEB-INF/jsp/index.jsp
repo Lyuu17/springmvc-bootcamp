@@ -2,6 +2,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <tags:bootstrap/>
 <html>
 <head>
@@ -33,7 +34,9 @@
       <tr>
         <th class="text-center">ID</th>
         <th><fmt:message key="label.title"/></th>
-        <th class="text-center"><fmt:message key="label.actions"/></th>
+        <security:authorize access="hasRole('REGISTERED')">
+          <th class="text-center"><fmt:message key="label.actions"/></th>
+        </security:authorize>
       </tr>
       </thead>
 
@@ -42,11 +45,14 @@
         <tr>
           <td class="text-center align-middle">${game.id}</td>
           <td class="col-10 align-middle"><a href="/game/${game.id}">${game.title}</a></td>
-          <td class="d-flex flex-row justify-content-center">
-            <button class="btn btn-primary edit-game-btn" data-id="${game.id}"><fmt:message key="label.edit"/></button>
-            <button class="btn ms-sm-2 btn-danger delete-game-btn" data-id="${game.id}"><fmt:message
-                key="label.delete"/></button>
-          </td>
+          <security:authorize access="hasRole('REGISTERED')">
+            <td class="d-flex flex-row justify-content-center">
+              <button class="btn btn-primary edit-game-btn" data-id="${game.id}"><fmt:message
+                  key="label.edit"/></button>
+              <button class="btn ms-sm-2 btn-danger delete-game-btn" data-id="${game.id}"><fmt:message
+                  key="label.delete"/></button>
+            </td>
+          </security:authorize>
         </tr>
       </c:forEach>
       </tbody>
