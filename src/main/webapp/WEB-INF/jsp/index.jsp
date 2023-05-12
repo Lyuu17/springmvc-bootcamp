@@ -3,11 +3,11 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
-<tags:bootstrap/>
 <html>
 <head>
   <title><fmt:message key="label.game.games"/></title>
   <script type="text/javascript" src="/js/main.js"></script>
+  <tags:bootstrap/>
 </head>
 <body>
   <div class="m-lg-5">

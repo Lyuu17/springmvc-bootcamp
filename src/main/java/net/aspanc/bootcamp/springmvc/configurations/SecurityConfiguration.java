@@ -17,6 +17,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/game/new", "/game/edit/**", "/game/delete/**", "/game/rest/**")
                 .hasRole("REGISTERED")
                 .and()
-                .formLogin();
+                .formLogin()
+                .loginPage("/login")
+                .permitAll();
     }
 }

@@ -2,7 +2,6 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<tags:bootstrap/>
 <html>
 <head>
   <c:choose>
@@ -14,6 +13,7 @@
     </c:otherwise>
   </c:choose>
   <script type="text/javascript" src="/js/main.js"></script>
+  <tags:bootstrap/>
 </head>
 <body>
 
