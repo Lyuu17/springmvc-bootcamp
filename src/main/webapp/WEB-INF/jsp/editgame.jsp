@@ -15,6 +15,8 @@
       <h1><fmt:message key="label.game.notfound"/></h1>
     </c:when>
     <c:otherwise>
+      <tags:navbar/>
+
       <div class="m-4">
         <div class="border">
           <div class="bg-primary p-sm-2">

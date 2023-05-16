@@ -10,10 +10,12 @@
   <tags:bootstrap/>
 </head>
 <body>
-  <div class="m-lg-5">
+  <tags:navbar/>
+
+  <div class="m-lg-3">
     <tags:alertSuccess/>
 
-    <div class="d-flex flex-row justify-content-center mb-2">
+    <div class="d-flex flex-row justify-content-center mb-3">
       <button class="btn btn-primary" id="add-game-btn"><fmt:message key="label.game.add"/></button>
     </div>
 

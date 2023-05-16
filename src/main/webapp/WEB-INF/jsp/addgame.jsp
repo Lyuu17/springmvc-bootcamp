@@ -10,6 +10,8 @@
 </head>
 <body>
 
+  <tags:navbar/>
+
   <div class="m-4">
     <div class="border">
       <div class="bg-primary p-sm-2">
