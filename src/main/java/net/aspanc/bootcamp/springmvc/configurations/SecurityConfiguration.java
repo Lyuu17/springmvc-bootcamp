@@ -1,16 +1,23 @@
 package net.aspanc.bootcamp.springmvc.configurations;
 
+import net.aspanc.bootcamp.springmvc.services.UserService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+
+import javax.annotation.Resource;
 
 @Configuration
 @EnableWebSecurity
 @Order(Ordered.LOWEST_PRECEDENCE)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Resource
+    private UserService userService;
 
     @Configuration
     @EnableWebSecurity
@@ -27,6 +34,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                     .and()
                     .httpBasic();
         }
+    }
+
+    @Override
+    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+        authenticationManagerBuilder
+                .userDetailsService(userService);
     }
 
     @Override
