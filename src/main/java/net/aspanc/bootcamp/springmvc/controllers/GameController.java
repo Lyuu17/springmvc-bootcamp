@@ -1,28 +1,23 @@
 package net.aspanc.bootcamp.springmvc.controllers;
 
+import com.ibasco.agql.core.exceptions.BadRequestException;
 import net.aspanc.bootcamp.springmvc.dtos.GameDto;
-import net.aspanc.bootcamp.springmvc.dtos.SteamGameDto;
-import net.aspanc.bootcamp.springmvc.dtos.SteamGameNewsDto;
 import net.aspanc.bootcamp.springmvc.facades.GameFacade;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.net.URI;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-@Controller
+@RestController()
+@RequestMapping("api/v1/games/")
 public class GameController {
 
     @Resource
@@ -32,71 +27,62 @@ public class GameController {
     private MessageSource messageSource;
 
     @GetMapping("/")
-    private String index(Model model) {
-        model.addAttribute("gameList", gameFacade.findAll());
-        return "index";
+    private ResponseEntity<?> games(@RequestParam("id") Optional<Long> id, @RequestParam("title") Optional<String> title) {
+        return id.isEmpty() ? title.isPresent() ? ResponseEntity.of(title.map(t -> gameFacade.findByTitle(t))) : ResponseEntity.ok(gameFacade.findAll()) : ResponseEntity.of(gameFacade.findById(id.get()));
     }
 
-    @GetMapping("/game/{id}")
-    private String game(@PathVariable("id") Long id, Model model) {
-        gameFacade.findById(id).ifPresent(gameFound -> model.addAttribute("game", gameFound));
-        return "game";
-    }
+    @DeleteMapping("/{id}")
+    private ResponseEntity<?> deleteById(@PathVariable("id") Long id) {
+        Optional<GameDto> gameDto = gameFacade.findById(id);
 
-    @GetMapping("/game/delete/{id}")
-    private String deleteGame(@PathVariable("id") Long id, Model model, RedirectAttributes attr) {
-        attr.addFlashAttribute("alertMessageSuccess", messageSource.getMessage("alert.game.deleted.success", null, LocaleContextHolder.getLocale()));
-        gameFacade.findById(id).ifPresent(gameDto -> gameFacade.deleteById(id));
-        return "redirect:/";
-    }
-
-    @GetMapping("/game/search")
-    private String searchGame(@RequestParam("title") String title, Model model) {
-        model.addAttribute("gameList", gameFacade.findByTitle(title));
-        return "index";
-    }
-
-    @GetMapping("/game/add")
-    private String addGameForm(Model model) {
-        model.addAttribute("game", new GameDto());
-        return "addgame";
-    }
-
-    @PostMapping("/game/add")
-    private String addGame(@Validated @ModelAttribute("game") GameDto gameDto, BindingResult result, RedirectAttributes attr) {
-        if (result.hasErrors()) {
-            return "editgame";
+        if (gameDto.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
 
-        attr.addFlashAttribute("alertMessageSuccess", messageSource.getMessage("alert.game.added.success", null, LocaleContextHolder.getLocale()));
-        return "redirect:/game/" + gameFacade.save(gameDto).getId();
+        gameFacade.deleteById(id);
+
+        return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/game/edit/{id}")
-    private String editGameForm(Model model, @PathVariable("id") Long id) {
-        gameFacade.findById(id).ifPresent(gameFound -> model.addAttribute("game", gameFound));
-        return "editgame";
-    }
-
-    @PostMapping("/game/edit/{id}")
-    private String editGame(@Validated @ModelAttribute("game") GameDto gameDto, BindingResult result, RedirectAttributes attr) {
-        if (result.hasErrors()) {
-            return "editgame";
+    @PostMapping("/")
+    private ResponseEntity<?> add(@Validated @RequestBody GameDto gameDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream().map(ObjectError::toString).collect(Collectors.toList()));
         }
 
-        attr.addFlashAttribute("alertMessageSuccess", messageSource.getMessage("alert.game.updated.success", null, LocaleContextHolder.getLocale()));
-        return "redirect:/game/" + gameFacade.save(gameDto).getId();
+        try {
+            return ResponseEntity.created(URI.create("game/" + gameFacade.save(gameDto).getId())).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    @GetMapping(value = "/game/steam/news/{steamId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    private List<SteamGameNewsDto> gameNews(@PathVariable("steamId") Integer steamId) {
-        return gameFacade.getGameNews(steamId);
+    @PatchMapping("/{id}")
+    private ResponseEntity<?> update(@PathVariable("id") Long id, @Validated @RequestBody GameDto gameDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors().stream().map(ObjectError::toString).collect(Collectors.toList()));
+        }
+
+        if (!gameDto.getId().equals(id))
+            throw new BadRequestException("GameId mismatch");
+
+        if (gameFacade.findById(id).isEmpty())
+            throw new BadRequestException("Invalid GameId");
+
+        try {
+            return ResponseEntity.created(URI.create("game/" + gameFacade.save(gameDto).getId())).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
-    @GetMapping(value = "/game/steam/details/{steamId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    private SteamGameDto gameDetails(@PathVariable("steamId") Integer steamId) {
-        return gameFacade.getGameDetails(steamId);
+    @GetMapping("/steam/news/{steamId}")
+    private ResponseEntity<?> gameNews(@PathVariable("steamId") Integer steamId) {
+        return ResponseEntity.of(Optional.ofNullable(gameFacade.getGameNews(steamId)));
+    }
+
+    @GetMapping("/steam/details/{steamId}")
+    private ResponseEntity<?> gameDetails(@PathVariable("steamId") Integer steamId) {
+        return ResponseEntity.of(Optional.ofNullable(gameFacade.getGameDetails(steamId)));
     }
 }
