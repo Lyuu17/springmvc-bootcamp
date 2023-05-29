@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolationException;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,6 +21,9 @@ public class GameServiceImplIntegrationTest {
     private final String TEST_GAME_NAME = "AAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCC";
     private final String TEST_GAME_DESCRIPTION = "Test description";
     private final Integer TEST_GAME_STEAMID = 1337;
+
+    private final Integer CURRENT_PAGE = 0;
+    private final Integer MAX_GAMES_PER_PAGE = 10;
 
     @Resource
     private GameServiceImpl gameService;
@@ -82,12 +84,12 @@ public class GameServiceImplIntegrationTest {
 
     @Test
     public void findAll() {
-        Assert.assertFalse(gameService.findAll().isEmpty());
+        Assert.assertFalse(gameService.findAll(CURRENT_PAGE, MAX_GAMES_PER_PAGE).isEmpty());
     }
 
     @Test
     public void findByTitle() {
-        Assert.assertTrue(gameService.findByTitle("BB").contains(gameModelTest));
+        Assert.assertTrue(gameService.findByTitle("BB", CURRENT_PAGE, MAX_GAMES_PER_PAGE).getContent().contains(gameModelTest));
     }
 
     @Test

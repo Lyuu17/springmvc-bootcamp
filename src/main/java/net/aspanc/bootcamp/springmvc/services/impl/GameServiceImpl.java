@@ -1,12 +1,13 @@
 package net.aspanc.bootcamp.springmvc.services.impl;
 
-import net.aspanc.bootcamp.springmvc.entities.GameModel;
 import net.aspanc.bootcamp.springmvc.daos.GameDao;
+import net.aspanc.bootcamp.springmvc.entities.GameModel;
 import net.aspanc.bootcamp.springmvc.services.GameService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,8 +17,8 @@ public class GameServiceImpl implements GameService {
     private GameDao gameDao;
 
     @Override
-    public List<GameModel> findAll() {
-        return gameDao.findAll();
+    public Page<GameModel> findAll(int page, int size) {
+        return gameDao.findAll(PageRequest.of(page, size));
     }
 
     @Override
@@ -26,8 +27,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<GameModel> findByTitle(String title) {
-        return gameDao.findByTitleContainingIgnoreCase(title);
+    public Page<GameModel> findByTitle(String title, int page, int size) {
+        return gameDao.findByTitleContainingIgnoreCase(title, PageRequest.of(page, size));
     }
 
     @Override

@@ -12,6 +12,7 @@ import net.aspanc.bootcamp.springmvc.entities.GameModel;
 import net.aspanc.bootcamp.springmvc.facades.GameFacade;
 import net.aspanc.bootcamp.springmvc.services.GameService;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -47,11 +48,9 @@ public class GameFacadeImpl implements GameFacade {
     private SteamAPIProperties steamAPIProperties;
 
     @Override
-    public List<GameDto> findAll() {
-        return gameService.findAll()
-                .stream()
-                .map(gameModelToGameDtoConverter::convert)
-                .collect(Collectors.toList());
+    public Page<GameDto> findAll(int page, int size) {
+        return gameService.findAll(page, size)
+                .map(gameModelToGameDtoConverter::convert);
     }
 
     @Override
@@ -61,11 +60,9 @@ public class GameFacadeImpl implements GameFacade {
     }
 
     @Override
-    public List<GameDto> findByTitle(String title) {
-        return gameService.findByTitle(title)
-                .stream()
-                .map(gameModelToGameDtoConverter::convert)
-                .collect(Collectors.toList());
+    public Page<GameDto> findByTitle(String title, int page, int size) {
+        return gameService.findByTitle(title, page, size)
+                .map(gameModelToGameDtoConverter::convert);
     }
 
     @Override

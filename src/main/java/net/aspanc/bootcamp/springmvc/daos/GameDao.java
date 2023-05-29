@@ -1,11 +1,11 @@
 package net.aspanc.bootcamp.springmvc.daos;
 
 import net.aspanc.bootcamp.springmvc.entities.GameModel;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-import java.util.List;
+public interface GameDao extends PagingAndSortingRepository<GameModel, Long> {
 
-public interface GameDao extends JpaRepository<GameModel, Long> {
-
-    List<GameModel> findByTitleContainingIgnoreCase(String title);
+    Page<GameModel> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 }

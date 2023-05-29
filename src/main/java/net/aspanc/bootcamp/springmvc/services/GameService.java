@@ -1,17 +1,17 @@
 package net.aspanc.bootcamp.springmvc.services;
 
 import net.aspanc.bootcamp.springmvc.entities.GameModel;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface GameService {
 
-    List<GameModel> findAll();
+    Page<GameModel> findAll(int page, int size);
 
     Optional<GameModel> findById(Long id);
 
-    List<GameModel> findByTitle(String title);
+    Page<GameModel> findByTitle(String title, int page, int size);
 
     void deleteById(Long id);
 
