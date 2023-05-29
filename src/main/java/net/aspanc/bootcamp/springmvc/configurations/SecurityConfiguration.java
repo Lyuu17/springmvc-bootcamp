@@ -51,6 +51,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.httpBasic()
                 .and()
+                .csrf()
+                .disable()
                 .authorizeRequests()
                 .antMatchers("/game/new", "/game/edit/**", "/game/delete/**", "/game/rest/**")
                 .hasRole("REGISTERED")
