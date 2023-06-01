@@ -11,6 +11,7 @@ import net.aspanc.bootcamp.springmvc.dtos.SteamGameNewsDto;
 import net.aspanc.bootcamp.springmvc.entities.GameModel;
 import net.aspanc.bootcamp.springmvc.facades.GameFacade;
 import net.aspanc.bootcamp.springmvc.services.GameService;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -76,6 +77,7 @@ public class GameFacadeImpl implements GameFacade {
     }
 
     @Override
+    @Cacheable("gameNewsCache")
     public List<SteamGameNewsDto> getGameNews(Integer steamId) {
         return steamNews.getNewsForApp(steamId, steamAPIProperties.getNewsMaxContentLength(), -1, steamAPIProperties.getNewsMaxItems(), "").join()
                 .stream()
@@ -84,6 +86,7 @@ public class GameFacadeImpl implements GameFacade {
     }
 
     @Override
+    @Cacheable("gameDetailsCache")
     public SteamGameDto getGameDetails(Integer steamId) {
         return storeAppDetailsGameSteamDataDtoConverter.convert(steamStorefront.getAppDetails(steamId).join());
     }
