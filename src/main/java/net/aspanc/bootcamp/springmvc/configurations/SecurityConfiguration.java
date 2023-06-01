@@ -23,23 +23,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Resource
     private PasswordEncoder passwordEncoder;
 
-    @Configuration
-    @EnableWebSecurity
-    public static class APIConfiguration extends WebSecurityConfigurerAdapter {
-
-        @Override
-        public void configure(HttpSecurity http) throws Exception {
-            http.csrf()
-                    .disable()
-                    .antMatcher("/admin/rest/**")
-                    .authorizeRequests()
-                    .anyRequest()
-                    .authenticated()
-                    .and()
-                    .httpBasic();
-        }
-    }
-
     @Override
     public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
